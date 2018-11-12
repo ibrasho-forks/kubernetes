@@ -523,7 +523,7 @@ func TestRoundTripper(t *testing.T) {
 		}
 
 		if wantToken != gotToken {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
 		fmt.Fprintln(w, "ok")

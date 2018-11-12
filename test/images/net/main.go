@@ -131,19 +131,19 @@ func handleRunRequest(w http.ResponseWriter, r *http.Request) {
 
 	urlParts := strings.Split(r.URL.Path, "/")
 	if len(urlParts) != 3 {
-		http.Error(w, fmt.Sprintf("invalid request to run: %v", urlParts), 400)
+		http.Error(w, fmt.Sprintf("invalid request to run: %v", urlParts), http.StatusBadRequest)
 		return
 	}
 
 	runner := urlParts[2]
 	if r.Body == nil {
-		http.Error(w, "Missing request body", 400)
+		http.Error(w, "Missing request body", http.StatusBadRequest)
 		return
 	}
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error reading body: %v", err), 400)
+		http.Error(w, fmt.Sprintf("error reading body: %v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -151,7 +151,7 @@ func handleRunRequest(w http.ResponseWriter, r *http.Request) {
 	if output, err = executeRunner(runner, string(body)); err != nil {
 		contents := fmt.Sprintf("Error from runner: %v\noutput:\n\n%s",
 			err, output.b.String())
-		http.Error(w, contents, 500)
+		http.Error(w, contents, http.StatusInternalServerError)
 		return
 	}
 

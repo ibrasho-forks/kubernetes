@@ -252,7 +252,7 @@ type debugHTTPHandler struct {
 
 func (h *debugHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if req.URL.Path != "/graph" {
-		http.Error(w, "", http.StatusNotFound)
+		http.NotFound(w, req)
 		return
 	}
 

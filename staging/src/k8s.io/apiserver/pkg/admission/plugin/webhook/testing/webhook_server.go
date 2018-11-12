@@ -52,7 +52,7 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got req: %v\n", r.URL.Path)
 	switch r.URL.Path {
 	case "/internalErr":
-		http.Error(w, "webhook internal server error", http.StatusInternalServerError)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	case "/invalidReq":
 		w.WriteHeader(http.StatusSwitchingProtocols)

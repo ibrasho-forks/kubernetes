@@ -84,7 +84,7 @@ func (r *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	handlingInfo := value.(proxyHandlingInfo)
 	if handlingInfo.local {
 		if r.localDelegate == nil {
-			http.Error(w, "", http.StatusNotFound)
+			http.NotFound(w, req)
 			return
 		}
 		r.localDelegate.ServeHTTP(w, req)
@@ -92,7 +92,7 @@ func (r *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if !handlingInfo.serviceAvailable {
-		http.Error(w, "service unavailable", http.StatusServiceUnavailable)
+		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
 		return
 	}
 
@@ -113,7 +113,7 @@ func (r *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	rloc, err := r.serviceResolver.ResolveEndpoint(handlingInfo.serviceNamespace, handlingInfo.serviceName)
 	if err != nil {
 		klog.Errorf("error resolving %s/%s: %v", handlingInfo.serviceNamespace, handlingInfo.serviceName, err)
-		http.Error(w, "service unavailable", http.StatusServiceUnavailable)
+		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
 		return
 	}
 	location.Host = rloc.Host
@@ -126,7 +126,7 @@ func (r *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	newReq.URL = location
 
 	if handlingInfo.proxyRoundTripper == nil {
-		http.Error(w, "", http.StatusNotFound)
+		http.NotFound(w, req)
 		return
 	}
 

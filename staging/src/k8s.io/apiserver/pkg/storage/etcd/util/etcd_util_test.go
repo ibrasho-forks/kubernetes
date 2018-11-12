@@ -60,7 +60,7 @@ func TestGetEtcdVersion_ValidVersion(t *testing.T) {
 
 func TestGetEtcdVersion_ErrorStatus(t *testing.T) {
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Error(w, "", http.StatusServiceUnavailable)
+		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
 	}))
 	defer testServer.Close()
 

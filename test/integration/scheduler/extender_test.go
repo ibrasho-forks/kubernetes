@@ -111,7 +111,7 @@ func (e *Extender) serveHTTP(t *testing.T, w http.ResponseWriter, req *http.Requ
 			t.Fatalf("Failed to encode %+v", resp)
 		}
 	} else {
-		http.Error(w, "Unknown method", http.StatusNotFound)
+		http.NotFound(w, req)
 	}
 }
 

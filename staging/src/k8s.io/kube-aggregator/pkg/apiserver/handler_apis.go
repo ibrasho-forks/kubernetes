@@ -149,7 +149,7 @@ func (r *apiGroupHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	discoveryGroup := convertToDiscoveryAPIGroup(apiServicesForGroup)
 	if discoveryGroup == nil {
-		http.Error(w, "", http.StatusNotFound)
+		http.NotFound(w, req)
 		return
 	}
 	responsewriters.WriteObjectNegotiated(r.codecs, schema.GroupVersion{}, w, req, http.StatusOK, discoveryGroup)

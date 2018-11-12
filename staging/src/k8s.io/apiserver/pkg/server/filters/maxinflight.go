@@ -186,5 +186,5 @@ func WithMaxInFlightLimit(
 func tooManyRequests(req *http.Request, w http.ResponseWriter) {
 	// Return a 429 status indicating "Too Many Requests"
 	w.Header().Set("Retry-After", retryAfter)
-	http.Error(w, "Too many requests, please try again later.", http.StatusTooManyRequests)
+	http.Error(w, http.StatusText(http.StatusTooManyRequests), http.StatusTooManyRequests)
 }
